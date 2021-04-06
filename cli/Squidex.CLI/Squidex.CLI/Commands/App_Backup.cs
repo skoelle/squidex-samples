@@ -50,13 +50,16 @@ namespace Squidex.CLI.Commands
 
                 using (var tcs = new CancellationTokenSource(TimeSpan.FromMinutes(arguments.Timeout)))
                 {
+                    log.WriteLine("using start");
                     while (!tcs.Token.IsCancellationRequested)
                     {
+                        log.WriteLine("im while");
                         var backups = await session.Backups.GetBackupsAsync(session.App, tcs.Token);
                         var backup = backups.Items.FirstOrDefault(x => x.Started >= backupStarted);
 
                         if (backup?.Stopped != null)
                         {
+                            log.WriteLine("found");
                             foundBackup = backup;
                             break;
                         }
